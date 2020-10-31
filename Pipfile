@@ -10,6 +10,9 @@ pytest = "*"
 [packages]
 django = "*"
 django-environ = "*"
+django-model-utils = "*"
+django-countries = "*"
+pillow = "*"
 
 [requires]
 python_version = "3.8"
