@@ -1,7 +1,10 @@
 from django.db import models
 from django.contrib.auth import get_user_model
+from django.template.defaultfilters import slugify
 from model_utils.models import TimeStampedModel
 from django_countries.fields import CountryField
+
+from .utils import get_random_code
 
 
 class Profile(TimeStampedModel):
@@ -10,6 +13,8 @@ class Profile(TimeStampedModel):
         ('m', 'Female'),
         ('u', 'Better Not Say')
     )
+    first_name = models.CharField(max_length=50, blank=True)
+    last_name = models.CharField(max_length=50, blank=True)
     user = models.OneToOneField(get_user_model(), 
         on_delete=models.CASCADE)
     bio = models.TextField(null=True, blank=True)
@@ -25,3 +30,16 @@ class Profile(TimeStampedModel):
 
     def __str__(self):
         return f"{self.user.username}-{self.created}"
+
+    def save(self, *args, **kwargs):
+        ex = False
+        if self.first_name:
+            to_slug = slugify(str(self.first_name))
+            ex = Profile.objects.filter(slug=to_slug)
+            while ex:
+                to_slug = slugify(to_slug + ' ' + str(get_random_code()))
+                ex = Profile.objects.filter(slug=to_slug).exists()
+        else: 
+            to_slug = slugify(self.user.username)
+        self.slug = to_slug
+        super().save(*args, **kwargs)
