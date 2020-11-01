@@ -29,7 +29,7 @@ class Profile(TimeStampedModel):
         max_length=1)
 
     def __str__(self):
-        return f"{self.user.username}-{self.created}"
+        return f"{self.user.username} - {self.created.strftime('%d %b %Y')}"
 
     def save(self, *args, **kwargs):
         ex = False
@@ -43,3 +43,21 @@ class Profile(TimeStampedModel):
             to_slug = slugify(self.user.username)
         self.slug = to_slug
         super().save(*args, **kwargs)
+
+
+STATUS_CHOICES = (
+    ('send', 'send'),
+    ('accepted', 'accepted')
+)
+class Relationship(TimeStampedModel):
+    sender = models.ForeignKey(get_user_model(), 
+        on_delete=models.CASCADE, related_name='sender')
+    reciever = models.ForeignKey(get_user_model(), 
+        on_delete=models.CASCADE, related_name='reciever')
+    status = models.CharField(max_length=8, choices=STATUS_CHOICES)
+
+    def __str__(self):
+        return (
+            f"{self.sender} sent friend request to "  
+            f"{self.reciever} | status: {self.status}"
+        )
