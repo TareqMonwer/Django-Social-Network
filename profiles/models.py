@@ -50,9 +50,9 @@ STATUS_CHOICES = (
     ('accepted', 'accepted')
 )
 class Relationship(TimeStampedModel):
-    sender = models.ForeignKey(get_user_model(), 
+    sender = models.ForeignKey(Profile, 
         on_delete=models.CASCADE, related_name='sender')
-    reciever = models.ForeignKey(get_user_model(), 
+    reciever = models.ForeignKey(Profile, 
         on_delete=models.CASCADE, related_name='reciever')
     status = models.CharField(max_length=8, choices=STATUS_CHOICES)
 
