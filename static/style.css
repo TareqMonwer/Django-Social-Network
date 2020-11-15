@@ -9,3 +9,7 @@ body {
 }
 
 .mb-7 {margin-bottom: 7px !important;}
+
+.border {
+    border: 1px solid #b4b4b4 !important;
+}

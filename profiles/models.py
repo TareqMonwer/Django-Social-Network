@@ -30,6 +30,9 @@ class Profile(TimeStampedModel):
 
     def __str__(self):
         return f"{self.user.username} - {self.created.strftime('%d %b %Y')}"
+    
+    def get_friends(self):
+        return self.friends.all()
 
     def save(self, *args, **kwargs):
         ex = False
