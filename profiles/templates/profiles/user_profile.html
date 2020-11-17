@@ -2,34 +2,46 @@
 {% block title %} {{ obj.first_name }} {% endblock title %} 
 
 {% block content %}
-<h1>My Profile</h1>
-<hr />
-<div class="ui link cards">
-    <div class="card border">
-        <div class="image">
-            <img src="{{ obj.user_icon.url }}" />
-        </div>
-        <div class="content">
-            <div class="header">{{ obj.first_name }} {{ obj.last_name }}</div>
-            <div class="meta">
-                <a href="">
-                    <img src="{{ obj.country.flag }}" alt=""> 
-                    {{ obj.country }}
-                </a>
-                <a><small>{{obj.slug}}</small></a>
+    <h1>My Profile</h1>
+    <hr />
+    <div class="ui grid">
+        <div class="four wide column">
+            <div class="ui link cards">
+                <div class="card">
+                    <div class="image">
+                        <img src="{{ obj.user_icon.url }}" />
+                    </div>
+                    <div class="content">
+                        <div class="header">{{ obj.first_name }} {{ obj.last_name }}</div>
+                        <div class="meta">
+                            <a href="">
+                                <img src="{{ obj.country.flag }}" alt="">
+                                {{ obj.country }}
+                            </a>
+                            <a><small>{{obj.slug}}</small></a>
+                        </div>
+                        <div class="description">
+                            <i class="comment alternate outline icon"></i>
+                            {{ obj.bio }}
+                        </div>
+                    </div>
+                    <div class="extra content">
+                        <span class="floated right" style="margin-right: 10px;"> Joined in {{ obj.created.year }} </span>
+                        <span>
+                            <i class="user icon"></i>
+                            {{ obj.get_friends.count }} Friend{{ obj.get_friends.count|pluralize }}
+                        </span>
+                    </div>
+                </div>
             </div>
-            <div class="description">
-                <i class="comment alternate outline icon"></i>
-                {{ obj.bio }}
-            </div>
         </div>
-        <div class="extra content">
-            <span class="floated right" style="margin-right: 10px;"> Joined in {{ obj.created.year }} </span>
-            <span>
-                <i class="user icon"></i>
-                {{ obj.get_friends.count }} Friend{{ obj.get_friends.count|pluralize }}
-            </span>
+        <div class="eight wide column">
+            <h4>Update Profile Details</h4>
+            <form class="ui form" action="" method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <input class="ui positive button" type="submit" value="Update">
+            </form>
         </div>
     </div>
-</div>
 {% endblock %}
