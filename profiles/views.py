@@ -11,8 +11,16 @@ def my_profile(request):
         request.FILES or None,
         instance=obj
     )
+    confirm = False
+
+    if request.method == 'POST':
+        if form.is_valid():
+            form.save()
+            confirm = True
+
     ctx = {
         'obj': obj,
         'form': form,
+        'confirm': confirm,
     }
     return render(request, 'profiles/user_profile.html', ctx)

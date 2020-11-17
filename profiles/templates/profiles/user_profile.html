@@ -12,7 +12,12 @@
                         <img src="{{ obj.user_icon.url }}" />
                     </div>
                     <div class="content">
-                        <div class="header">{{ obj.first_name }} {{ obj.last_name }}</div>
+                        <div class="header">
+                            {{ obj.first_name }} {{ obj.last_name }}
+                            <button class="circular ui icon button" id="update_profile_modal">
+                                <i class="icon settings"></i>
+                            </button>
+                        </div>
                         <div class="meta">
                             <a href="">
                                 <img src="{{ obj.country.flag }}" alt="">
@@ -36,12 +41,54 @@
             </div>
         </div>
         <div class="eight wide column">
-            <h4>Update Profile Details</h4>
-            <form class="ui form" action="" method="post" enctype="multipart/form-data">
-                {% csrf_token %}
-                {{ form.as_p }}
-                <input class="ui positive button" type="submit" value="Update">
-            </form>
+            {% if confirm %}
+                <div class="ui green message">
+                     <i class="close icon"></i>
+                     <div class="header">
+                         Your Profile is Now Updated
+                     </div>
+                </div>
+            {% endif %}
+            {# Update Profile Modal #}
+            <div class="ui modal">
+                  <i class="close icon"></i>
+                  <div class="header">
+                        Update Profile Details
+                  </div>
+                  <div class="image content">
+                        <div class="ui medium image">
+                          <img src="{{ obj.user_icon.url }}">
+                        </div>
+                        <div class="description">
+                              <form class="ui form" action="" method="post" enctype="multipart/form-data">
+                                    {% csrf_token %}
+                                    {{ form.as_p }}
+                        </div>
+                  </div>
+                  <div class="actions">
+                        <div class="ui black deny button">
+                            Nope
+                        </div>
+                        <button type="submit" class="ui positive right labeled icon button">
+                            UPDATE MY PROFILE
+                            <i class="checkmark icon"></i>
+                        </button>
+                      </form>
+                  </div>
+            </div>
         </div>
     </div>
+{% endblock %}
+
+{% block scripts %}
+    <script type="text/javascript">
+        {# Hide message on click #}
+        $('.message .close').on('click', function() {
+            $(this).closest('.message').transition('fade');
+        });
+        {#  Show modal  #}
+        $('#update_profile_modal').on('click', function() {
+            $('.ui.modal').modal('show');
+        })
+    </script>
 {% endblock %}
