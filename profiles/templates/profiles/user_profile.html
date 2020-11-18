@@ -40,7 +40,7 @@
                 </div>
             </div>
         </div>
-        <div class="eight wide column">
+        <div class="twelve wide column">
             {% if confirm %}
                 <div class="ui green message">
                      <i class="close icon"></i>
@@ -49,11 +49,18 @@
                      </div>
                 </div>
             {% endif %}
+            <div class="ui placeholder segment">
+                  <div class="ui icon header">
+                    <i class="pdf file outline icon"></i>
+                    No documents are listed for this customer.
+                  </div>
+                  <div class="ui primary button">Add Document</div>
+            </div>
             {# Update Profile Modal #}
             <div class="ui modal">
                   <i class="close icon"></i>
                   <div class="header">
-                        Update Profile Details
+                      Update Profile Details
                   </div>
                   <div class="image content">
                         <div class="ui medium image">
@@ -61,8 +68,8 @@
                         </div>
                         <div class="description">
                               <form class="ui form" action="" method="post" enctype="multipart/form-data">
-                                    {% csrf_token %}
-                                    {{ form.as_p }}
+                                  {% csrf_token %}
+                                  {{ form.as_p }}
                         </div>
                   </div>
                   <div class="actions">
@@ -74,6 +81,7 @@
                             <i class="checkmark icon"></i>
                         </button>
                       </form>
+
                   </div>
             </div>
         </div>
