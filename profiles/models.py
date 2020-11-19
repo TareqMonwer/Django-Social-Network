@@ -34,6 +34,27 @@ class Profile(TimeStampedModel):
     def get_friends(self):
         return self.friends.all()
 
+    def num_of_posts(self):
+        return self.posts.all().count()
+
+    def num_of_liked_posts(self):
+        likes = self.liked.all()
+        total_liked = 0
+        for like in likes:
+            if like.value == 'Like':
+                total_liked += 1
+        return total_liked
+
+    def num_of_likes_received(self):
+        posts = self.posts.all()
+        total_likes_received = 0
+        for post in posts:
+            total_likes_received += post.likes.all().count()
+        return total_likes_received
+
+    def author_posts(self):
+        return self.posts.all()
+
     def save(self, *args, **kwargs):
         ex = False
         if self.first_name:

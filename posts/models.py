@@ -15,15 +15,18 @@ class PostImage(TimeStampedModel):
 
 class Post(TimeStampedModel):
     content = models.TextField()
-    images = models.ManyToManyField(PostImage, related_name='post_images', blank=True)
-    liked = models.ManyToManyField(Profile, default=None, related_name='likes'),
+    images = models.ManyToManyField(PostImage, blank=True, related_name='post_images')
     author = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='posts')
+    likes = models.ManyToManyField(Profile, blank=True, related_name='likes')
 
     def __str__(self):
         return f"{self.content[:20]}"
 
     def number_of_likes(self):
-        return self.liked.all().count()
+        return self.likes.all().count()
+
+    def number_of_comments(self):
+        return self.comments.all().count()
 
     class Meta:
         ordering = ('-created', )
@@ -45,7 +48,7 @@ LIKE_CHOICES = (
 
 
 class Like(TimeStampedModel):
-    user = models.ForeignKey(Profile, on_delete=models.CASCADE)
+    user = models.ForeignKey(Profile, on_delete=models.CASCADE, related_name='liked')
     post = models.ForeignKey(Post, on_delete=models.CASCADE)
     value = models.CharField(choices=LIKE_CHOICES, max_length=8)
 
